@@ -39,7 +39,16 @@ String retorno(String jSon)
 
 }
 
+void ISRWatchdog(){
+  watchdogCount++;
+  //Serial.println(String(watchdogCount));
+  if(watchdogCount == 30){
+    Serial.println();
+    Serial.println("Resetando...");
+    ESP.reset();
+  }
 
+}
 
 
 String login()
@@ -400,10 +409,7 @@ void inicializaTemporizador() {
 void setup()
 {
   
-
-  
   pinMode(D3, OUTPUT);
-
   pinMode(D0, INPUT);
   pinMode(D1, INPUT);
   pinMode(D2, INPUT);
@@ -412,6 +418,8 @@ void setup()
   pinMode(D6, INPUT);
   pinMode(D7, INPUT);
   pinMode(D8, INPUT);
+
+  secondTicker.attach(1, ISRWatchdog);
 
   randomSeed(analogRead(0));
 
@@ -514,12 +522,12 @@ void loop()
             String nome = doc["nome"];
             String getId = doc["id"];
             id = getId;
-            //Serial.print(retornoHoraData() + " " + nome + " - ID:");
-            //Serial.println(id);
+            Serial.print(retornoHoraData() + " CONECTADO  " + nome + " - ID:");
+            Serial.println(id);
             conectado = true;
             aliveRetorno = true;
+            watchdogCount = 0;
             //client.print(alive());
-
           }
           if (status == "CONTROLLERCOMMAND")
           {

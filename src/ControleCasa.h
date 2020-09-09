@@ -5,22 +5,26 @@
 #include <Thread.h>
 #include <ArduinoJson.h>
 #include "utis.h"
-
+#include <Ticker.h>
 
 
 
 String ssid = "Mariano_2G";
 String password = "20061977";
+String nameIot = "CasaMatinhos";
+String nomeConector = "CasaMatinhos";
+String server = "34.69.67.128";
+//String server = "2001:1284:f013:b957:e911:cd0d:2220:24b0";
+//String server = "192.168.0.103";
+
+
 String id = "0";
 String idRetorno = "";
 String idIot = "0";
-String nameIot = "teste";
 String tipoIot = "IOT";
-String nomeConector = "teste";
 String atualEstado = "ON";
-//String server = "34.69.67.128";
-//String server = "2001:1284:f013:b957:e911:cd0d:2220:24b0";
-String server = "192.168.0.103";
+Ticker secondTicker;
+long watchdogCount = 0;
 String jSon = "";
 int porta = 27015;
 String usuario = "Matinhos";
@@ -35,8 +39,6 @@ int mes = 0;
 int ano = 0;
 boolean conectado = false;
 boolean aliveRetorno = false;
-//WiFiUDP ntpUDP;
-//NTPClient timeClient(ntpUDP, "a.st1.ntp.br", -3 * 3600, 60000);
 String horaAtual;
 String horaAtualResetar;
 boolean horaAtualResetarInicializar = false;
@@ -59,7 +61,6 @@ StaticJsonDocument<1000> doc;
 StaticJsonDocument<1000> com;
 Thread myThread = Thread();
 WiFiClient client;
-//String retornoHoraData();
 void inicializaTemporizador();
 void log(String texto);
 String alive();
